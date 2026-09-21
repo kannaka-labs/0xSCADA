@@ -540,3 +540,7 @@ WAVE 4: CONSTELLATION   →  Cross-repo bridges + Evolutionary integrity + Sacre
 ```
 
 </div>
+
+## License
+
+[Space Child License v1.0](https://legal.spacechild.love/license) — source-available and peace-conditional: free for peaceful, humanitarian, commercial and defensive use; withheld for the uses in its Peace Clause. See `LICENSE` and `NOTICE`.
