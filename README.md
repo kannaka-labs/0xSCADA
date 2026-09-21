@@ -21,7 +21,7 @@
 
 <br/>
 
-![License](https://img.shields.io/badge/LICENSE-APACHE_2.0-ff4081?style=flat-square&labelColor=100D23)
+![License](https://img.shields.io/badge/LICENSE-SPACE_CHILD_v1.0-ff4081?style=flat-square&labelColor=100D23)
 ![TypeScript](https://img.shields.io/badge/TYPESCRIPT-5.0-00FF9C?style=flat-square&labelColor=100D23&logo=typescript&logoColor=00FF9C)
 ![React](https://img.shields.io/badge/REACT-18-0ABDC9?style=flat-square&labelColor=100D23&logo=react&logoColor=0ABDC9)
 ![Solidity](https://img.shields.io/badge/SOLIDITY-0.8-c592ff?style=flat-square&labelColor=100D23&logo=solidity&logoColor=c592ff)
@@ -513,7 +513,7 @@ WAVE 4: CONSTELLATION   →  Cross-repo bridges + Evolutionary integrity + Sacre
 │   We write code so that machines may be free.                                │
 │                                                                              │
 │   ┌────────────────────────────────────────────┐                             │
-│   │  Apache 2.0 • 0x5CADA                     │                             │
+│   │  Space Child v1.0 • 0x5CADA                │                             │
 │   └────────────────────────────────────────────┘                             │
 │                                                                              │
 └──────────────────────────────────────────────────────────────────────────────┘
