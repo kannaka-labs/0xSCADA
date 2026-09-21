@@ -56,6 +56,23 @@ jobs:
             author_name=$(git show -s --format='%an' "$sha")
             author_email=$(git show -s --format='%ae' "$sha")
             subject=$(git show -s --format='%s' "$sha")
+
+            # Dependabot signs off as `dependabot[bot] <support@github.com>`
+            # but authors as `dependabot[bot] <49699333+dependabot[bot]@
+            # users.noreply.github.com>`, so the exact name+email match below
+            # could never succeed and every dependency PR failed this check.
+            # The trailer is present, and the commit is a machine-generated
+            # dependency bump rather than a new contribution, so accept the
+            # bot's own sign-off. Keyed on the commit author rather than the
+            # branch name, so a human commit pushed to a dependabot/* branch
+            # is still held to the exact-match rule below.
+            if [ "$author_name" = "dependabot[bot]" ] \
+               && git show -s --format='%B' "$sha" \
+                    | grep -iqF 'Signed-off-by: dependabot[bot]'; then
+              echo "PASS  ${sha:0:9}  $subject  (dependabot sign-off)"
+              continue
+            fi
+
             expected="Signed-off-by: ${author_name} <${author_email}>"
 
             # Match the trailer case-insensitively on the label, exactly on the
