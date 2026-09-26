@@ -21,6 +21,7 @@ export interface ServiceCheckResult {
 export interface HealthCheckResult {
   status: 'healthy' | 'unhealthy' | 'degraded';
   timestamp: string;
+  version?: string;
   uptime: number;
   services: ServiceCheckResult[];
   healthy: boolean;
@@ -126,8 +127,10 @@ export class HealthManager {
   private periodicTimer?: ReturnType<typeof setInterval>;
   private listeners: CheckCompleteListener[] = [];
   private startTime = Date.now();
+  private version?: string;
 
-  constructor(cacheTtlMs = 10_000, checkTimeoutMs = 10_000) {
+  constructor(cacheTtlMs = 10_000, checkTimeoutMs = 10_000, version?: string) {
+    this.version = version;
     this.cacheTtlMs = cacheTtlMs;
     this.checkTimeoutMs = checkTimeoutMs;
   }
@@ -239,6 +242,7 @@ export class HealthManager {
     const result: HealthCheckResult = {
       status,
       timestamp: new Date().toISOString(),
+      ...(this.version ? { version: this.version } : {}),
       uptime: (Date.now() - this.startTime) / 1000,
       services,
       healthy: status !== 'unhealthy',
