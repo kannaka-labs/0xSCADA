@@ -21,12 +21,12 @@ COPY package.json package-lock.json ./
 RUN npm ci --ignore-scripts=false
 
 # Copy source and build
-COPY tsconfig.json vite.config.ts drizzle.config.ts ./
-COPY server/ ./server/
-COPY client/ ./client/
-COPY shared/ ./shared/
+# Same inputs as the root Dockerfile (tsc, rootDir ".", outDir "dist"); the old
+# explicit list copied a drizzle.config.ts that no longer exists and broke the build.
+COPY . .
 
-RUN npm run build
+# tsconfig is noEmit; the runnable server is the esbuild bundle (package.json `start`).
+RUN npm run build:server
 
 # Prune dev dependencies
 RUN npm prune --production
@@ -45,6 +45,8 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./
+COPY --from=builder /app/client ./client
+COPY --from=builder /app/contracts ./contracts
 
 # Resource hint labels
 LABEL org.opencontainers.image.title="0xSCADA Edge"
@@ -69,4 +71,4 @@ EXPOSE 5000
 
 USER scada
 
-CMD ["node", "dist/index.js"]
+CMD ["node", "dist/server/index.cjs"]
