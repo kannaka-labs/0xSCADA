@@ -22,6 +22,7 @@ import { publishControlLoopProbeStatus } from '../integrity/latency-probe';
 import { getBlueprintProductionSafetyStatus } from '../blueprint/production-safety';
 import { zeroDowntimeUpgradeRuntime } from '../scaling/upgrade-runtime';
 import type { Response } from 'express';
+import { version as packageVersion } from '../../package.json';
 // Tick-aware scheduler (#458): surface schedulingMode in /health and append
 // blueprint tick telemetry to /metrics.
 //
@@ -64,7 +65,13 @@ export const healthCheckTimestamp: any = registry.gauge(
 );
 
 // ── Singleton ────────────────────────────────────────────────────────────────
-export const healthManager = new HealthManager(/* cacheTtlMs */ 10_000);
+// APP_VERSION lets a deploy stamp a build id (e.g. a git sha); otherwise the
+// package version. Before this, GET /api/health carried no version at all.
+export const healthManager = new HealthManager(
+  /* cacheTtlMs */ 10_000,
+  /* checkTimeoutMs */ 10_000,
+  process.env.APP_VERSION || packageVersion,
+);
 
 // ── Register checks ──────────────────────────────────────────────────────────
 

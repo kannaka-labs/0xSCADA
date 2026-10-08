@@ -217,56 +217,9 @@ export async function registerRoutes(
     res.json(tagStreamServer.getMetrics());
   });
 
-  // ==========================================================================
-  // HEALTH CHECK
-  // ==========================================================================
-  app.get("/api/health", async (req, res) => {
-    try {
-      // Check database connectivity with lightweight query
-      const dbHealth = await storage.healthCheck();
-
-      // Check blockchain service
-      const blockchainConnected = (blockchainService as any).isEnabled();
-
-      // Determine overall health status
-      const isHealthy = dbHealth.connected;
-
-      const response = {
-        status: isHealthy ? "healthy" : "unhealthy",
-        timestamp: new Date().toISOString(),
-        version: "1.0.0",
-        uptime: process.uptime(),
-        components: {
-          database: {
-            status: dbHealth.connected ? "up" : "down",
-            latencyMs: dbHealth.latencyMs,
-          },
-          blockchain: {
-            status: blockchainConnected ? "up" : "down",
-          },
-        },
-      };
-
-      if (isHealthy) {
-        res.status(200).json(response);
-      } else {
-        res.status(503).json(response);
-      }
-    } catch (error) {
-      logError(error, "Health check failed:");
-      res.status(503).json({
-        status: "unhealthy",
-        timestamp: new Date().toISOString(),
-        version: "1.0.0",
-        uptime: process.uptime(),
-        components: {
-          database: { status: "down" },
-          blockchain: { status: "unknown" },
-        },
-        error: error instanceof Error ? error.message : "Unknown error",
-      });
-    }
-  });
+  // GET /api/health is served by healthRouter (server/health), mounted in
+  // server/index.ts before registerRoutes runs. A second handler here was
+  // unreachable and has been removed.
 
   // Sites
   app.get("/api/sites", async (req, res) => {
