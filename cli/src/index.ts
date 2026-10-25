@@ -154,6 +154,16 @@ program.on("command:*", (operands) => {
 });
 
 // Parse arguments
+// The global --json / --output / --no-color are the program's options, and Commander gives a flag to the
+// program wherever it appears ("status --json" included), so a command's own options.json stayed unset and
+// every command printed its human output. Copy them onto the command that is about to run.
+program.hook("preAction", (_root, action) => {
+  const g = program.opts();
+  if (g.json) action.setOptionValue("json", true);
+  if (g.output && action.getOptionValue("output") === undefined) action.setOptionValue("output", g.output);
+  if (g.color === false) action.setOptionValue("color", false);
+});
+
 program.parse();
 
 // If no command specified, show help
