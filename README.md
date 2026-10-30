@@ -93,7 +93,7 @@ This is not a product. This is a **protocol** — where the machines that pump y
 
 ```bash
 # Clone
-git clone https://github.com/NickFlach/0xSCADA.git
+git clone https://github.com/kannaka-labs/0xSCADA.git
 cd 0xSCADA
 
 # Install dependencies
