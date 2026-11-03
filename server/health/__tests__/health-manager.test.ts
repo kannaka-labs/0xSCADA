@@ -14,6 +14,11 @@ describe('HealthManager', () => {
     expect(h.services).toHaveLength(0);
   });
 
+  it('reports the version it was built with, and omits it when none was given', async () => {
+    expect((await new HealthManager(0, 100, '1.2.3').checkAll()).version).toBe('1.2.3');
+    expect(await hm.checkAll()).not.toHaveProperty('version');
+  });
+
   it('returns healthy when all checks pass', async () => {
     hm.registerSimple('db', async () => true);
     hm.registerSimple('cache', async () => true, false);
